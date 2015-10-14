@@ -95,11 +95,9 @@ class ControllerPaymentPayfortFort extends Controller {
         $signature = hash($this->config->get('payfort_fort_entry_hash_algorithm') ,$shaString);
         
         if ($this->config->get('payfort_fort_entry_sandbox_mode')){
-            //$gatewayUrl = 'http://bkend2.pfdev.com:8080/fortApiV2/paymentPage';
             $gatewayUrl = 'https://sbcheckout.payfort.com/FortAPI/paymentPage';
         }
         else{
-            //$gatewayUrl = 'http://bkend2.pfdev.com:8080/fortApiV2/paymentPage';
             $gatewayUrl = 'https://checkout.payfort.com/FortAPI/paymentPage';
         }
         

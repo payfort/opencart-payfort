@@ -136,7 +136,7 @@
                 <?php } ?>
               </select></td>
           </tr>
-          <<tr>
+          <tr>
             <td><?php echo $entry_sort_order; ?></td>
             <td><input type="text" name="payfort_fort_sort_order" value="<?php echo $payfort_fort_sort_order; ?>" size="1" /></td>
           </tr>
