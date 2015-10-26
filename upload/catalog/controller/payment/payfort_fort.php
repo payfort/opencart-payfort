@@ -60,6 +60,8 @@ class ControllerPaymentPayfortFort extends Controller {
             }
             
             if (!$success){
+                //$this->model_checkout_order->confirm($order_id, 10, 'Payment Error', false);
+                $this->model_checkout_order->update($order_id, 10, 'Payment Failed', false);
                 header('location:'.$this->url->link('checkout/checkout'));
             }
             
@@ -114,6 +116,8 @@ class ControllerPaymentPayfortFort extends Controller {
         
         $json['form'] = $form;
         
+        $this->model_checkout_order->confirm($order_id, 1, 'Pending Payment', false);
+
         $this->response->setOutput(json_encode($json));
 
     }
