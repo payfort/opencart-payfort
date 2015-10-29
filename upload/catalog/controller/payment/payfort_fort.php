@@ -27,7 +27,6 @@ class ControllerPaymentPayfortFort extends Controller {
             $signature = $_GET['signature'];
             
             unset($params['signature']);
-            unset($params['_s']);
             unset($params['route']);
             ksort($params);
             
