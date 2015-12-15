@@ -10,7 +10,6 @@ class ControllerPaymentPayfortFort extends Controller {
         } else {
             $this->template = 'default/template/payment/payfort_fort.tpl';
         }
-        $this->data['error_warning'] = 'adsf';
         $this->render();
     }
     
@@ -85,6 +84,19 @@ class ControllerPaymentPayfortFort extends Controller {
             'return_url'            => $this->url->link('payment/payfort_fort/response'),
         );
         
+        $this->db->query("UPDATE `" . DB_PREFIX . "order` SET payment_method = 'Credit / Debit Card', date_modified = NOW() WHERE order_id = '" . (int)$order_id . "'");
+        
+        $isSADAD = isset($_POST['SADAD']) ? $_POST['SADAD'] : false;
+        $isNaps = isset($_POST['NAPS']) ? $_POST['NAPS'] : false;
+
+        if ($isSADAD == "true"){
+            $postData['payment_option'] = 'SADAD';
+            $this->db->query("UPDATE `" . DB_PREFIX . "order` SET payment_method = 'SADAD', date_modified = NOW() WHERE order_id = '" . (int)$order_id . "'");
+        }
+        else if ($isNaps == "true"){
+            $postData['payment_option'] = 'NAPS';
+            $postData['order_description'] = $order_id;
+        }
         //calculate request signature
         $shaString = '';
         ksort($postData);

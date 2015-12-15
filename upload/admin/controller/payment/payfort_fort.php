@@ -47,6 +47,11 @@ class ControllerPaymentPayfortFort extends Controller {
         $this->data['entry_order_status'] = $this->language->get('entry_order_status');
         $this->data['entry_status'] = $this->language->get('entry_status');
         $this->data['entry_sort_order'] = $this->language->get('entry_sort_order');
+        $this->data['entry_sadad'] = $this->language->get('entry_sadad');
+        $this->data['entry_naps'] = $this->language->get('entry_naps');
+        $this->data['entry_credit_card'] = $this->language->get('entry_credit_card');
+        $this->data['text_yes'] = $this->language->get('text_yes');
+        $this->data['text_no'] = $this->language->get('text_no');
 
         $this->data['button_save'] = $this->language->get('button_save');
         $this->data['button_cancel'] = $this->language->get('button_cancel');
@@ -81,9 +86,13 @@ class ControllerPaymentPayfortFort extends Controller {
         } else {
             $this->data['error_payfort_fort_entry_response_sha_phrase'] = '';
         }
- 
- 
-
+        
+        if (isset($this->error['payfort_fort_payment_method_required'])) {
+            $this->data['payfort_fort_payment_method_required'] = $this->error['payfort_fort_payment_method_required'];
+        } else {
+            $this->data['payfort_fort_payment_method_required'] = '';
+        }
+        
         $this->data['breadcrumbs'] = array();
 
         $this->data['breadcrumbs'][] = array(
@@ -161,16 +170,28 @@ class ControllerPaymentPayfortFort extends Controller {
         } else {
             $this->data['payfort_fort_order_status_id'] = $this->config->get('payfort_fort_order_status_id');
         }
+        
+        if (isset($this->request->post['payfort_fort_sadad'])) {
+            $this->data['payfort_fort_sadad'] = $this->request->post['payfort_fort_sadad'];
+        } else {
+            $this->data['payfort_fort_sadad'] = $this->config->get('payfort_fort_sadad');
+        }
+        
+        if (isset($this->request->post['payfort_fort_naps'])) {
+            $this->data['payfort_fort_naps'] = $this->request->post['payfort_fort_naps'];
+        } else {
+            $this->data['payfort_fort_naps'] = $this->config->get('payfort_fort_naps');
+        }
+        
+        if (isset($this->request->post['payfort_fort_credit_card'])) {
+            $this->data['payfort_fort_credit_card'] = $this->request->post['payfort_fort_credit_card'];
+        } else {
+            $this->data['payfort_fort_credit_card'] = $this->config->get('payfort_fort_credit_card');
+        }
 
         $this->load->model('localisation/order_status');
 
         $this->data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
-
-        if (isset($this->request->post['payfort_fort_geo_zone_id'])) {
-            $this->data['payfort_fort_geo_zone_id'] = $this->request->post['payfort_fort_geo_zone_id'];
-        } else {
-            $this->data['payfort_fort_geo_zone_id'] = $this->config->get('payfort_fort_geo_zone_id');
-        }
 
         if (isset($this->request->post['payfort_fort_status'])) {
             $this->data['payfort_fort_status'] = $this->request->post['payfort_fort_status'];
@@ -212,6 +233,10 @@ class ControllerPaymentPayfortFort extends Controller {
         
         if (!$this->request->post['payfort_fort_entry_response_sha_phrase']) {
             $this->error['payfort_fort_entry_response_sha_phrase'] = $this->language->get('error_payfort_fort_entry_response_sha_phrase');
+        }
+        
+        if (!$this->request->post['payfort_fort_credit_card'] && !$this->request->post['payfort_fort_sadad'] && $this->request->post['payfort_fort_status']) {
+            $this->error['payfort_fort_payment_method_required'] = $this->language->get('payfort_fort_payment_method_required');
         }
 
         if (!$this->error) {

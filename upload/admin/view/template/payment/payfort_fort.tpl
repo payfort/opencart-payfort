@@ -125,6 +125,49 @@
               </select></td>
           </tr>
           <tr>
+            <td><?php echo $entry_credit_card; ?></td>
+            <td><select name="payfort_fort_credit_card">
+                <?php if ($payfort_fort_credit_card) { ?>
+                <option value="1" selected="selected"><?php echo $text_yes; ?></option>
+                <option value="0"><?php echo $text_no; ?></option>
+                <?php } else { ?>
+                <option value="1"><?php echo $text_yes; ?></option>
+                <option value="0" selected="selected"><?php echo $text_no; ?></option>
+                <?php } ?>
+              </select>
+              <?php if ($payfort_fort_payment_method_required) { ?>
+              <span class="error"><?php echo $payfort_fort_payment_method_required; ?></span>
+              <?php } ?></td>
+          </tr>
+          <tr>
+          <tr>
+            <td><?php echo $entry_sadad; ?></td>
+            <td><select name="payfort_fort_sadad">
+                <?php if ($payfort_fort_sadad) { ?>
+                <option value="1" selected="selected"><?php echo $text_yes; ?></option>
+                <option value="0"><?php echo $text_no; ?></option>
+                <?php } else { ?>
+                <option value="1"><?php echo $text_yes; ?></option>
+                <option value="0" selected="selected"><?php echo $text_no; ?></option>
+                <?php } ?>
+              </select> 
+              <?php if ($payfort_fort_payment_method_required) { ?>
+              <span class="error"><?php echo $payfort_fort_payment_method_required; ?></span>
+              <?php } ?></td>
+          </tr>
+          <tr>
+            <!--<td><?php echo $entry_naps; ?></td>
+            <td><select name="payfort_fort_naps">
+                <?php if ($payfort_fort_naps) { ?>
+                <option value="1" selected="selected"><?php echo $text_yes; ?></option>
+                <option value="0"><?php echo $text_no; ?></option>
+                <?php } else { ?>
+                <option value="1"><?php echo $text_yes; ?></option>
+                <option value="0" selected="selected"><?php echo $text_no; ?></option>
+                <?php } ?>
+              </select></td>--> 
+          </tr>
+          <tr>
             <td><?php echo $entry_status; ?></td>
             <td><select name="payfort_fort_status">
                 <?php if ($payfort_fort_status) { ?>
