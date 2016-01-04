@@ -110,7 +110,7 @@
           </tr>
           <tr>
             <td>Host to Host URL:</td>
-            <td><input size="50" type="text" readonly="readonly" value="<?php echo $this->url->link('payment/payfort_fort/response');?>"/></td>
+            <td><input size="50" type="text" readonly="readonly" value="<?php echo str_replace('admin/','',$this->url->link('payment/payfort_fort/response'));?>"/></td>
           </tr>        
           <tr>
             <td><?php echo $entry_order_status; ?></td>
@@ -156,7 +156,7 @@
               <?php } ?></td>
           </tr>
           <tr>
-            <!--<td><?php echo $entry_naps; ?></td>
+            <td><?php echo $entry_naps; ?></td>
             <td><select name="payfort_fort_naps">
                 <?php if ($payfort_fort_naps) { ?>
                 <option value="1" selected="selected"><?php echo $text_yes; ?></option>
@@ -165,7 +165,11 @@
                 <option value="1"><?php echo $text_yes; ?></option>
                 <option value="0" selected="selected"><?php echo $text_no; ?></option>
                 <?php } ?>
-              </select></td>--> 
+              </select>
+              <?php if ($payfort_fort_payment_method_required) { ?>
+              <span class="error"><?php echo $payfort_fort_payment_method_required; ?></span>
+              <?php } ?>
+              </td>
           </tr>
           <tr>
             <td><?php echo $entry_status; ?></td>
