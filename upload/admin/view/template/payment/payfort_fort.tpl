@@ -97,16 +97,24 @@
           <tr>
             <td><?php echo $entry_sandbox; ?></td>
             <td><?php if ($payfort_fort_entry_sandbox_mode) { ?>
-              <input type="radio" name="payfort_fort_entry_sandbox_mode" value="1" checked="checked" />
-              <?php echo $text_yes; ?>
-              <input type="radio" name="payfort_fort_entry_sandbox_mode" value="0" />
-              <?php echo $text_no; ?>
-              <?php } else { ?>
-              <input type="radio" name="payfort_fort_entry_sandbox_mode" value="1" />
-              <?php echo $text_yes; ?>
-              <input type="radio" name="payfort_fort_entry_sandbox_mode" value="0" checked="checked" />
-              <?php echo $text_no; ?>
-              <?php } ?></td>
+                <label class="radio-inline">
+                    <input type="radio" name="payfort_fort_entry_sandbox_mode" value="1" checked="checked" />
+                    <?php echo $text_yes; ?>
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="payfort_fort_entry_sandbox_mode" value="0" />
+                    <?php echo $text_no; ?>
+                </label>
+                <?php } else { ?>
+                <label class="radio-inline">
+                    <input type="radio" name="payfort_fort_entry_sandbox_mode" value="1" />
+                    <?php echo $text_yes; ?>
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="payfort_fort_entry_sandbox_mode" value="0" checked="checked" />
+                    <?php echo $text_no; ?>
+                </label>
+                <?php } ?></td>
           </tr>
           <tr>
             <td>Host to Host URL:</td>
