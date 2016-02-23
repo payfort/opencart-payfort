@@ -117,6 +117,20 @@
                 <?php } ?></td>
           </tr>
           <tr>
+            <td><?php echo $entry_debug; ?><br /><span class="help"><?php echo $help_debug; ?></span></td>
+            <td>
+                <select name="payfort_fort_debug">
+                    <?php if ($payfort_fort_debug) { ?>
+                        <option value="1" selected="selected"><?php echo $text_yes ?></option>
+                        <option value="0"><?php echo $text_no ?></option>
+                    <?php } else { ?>
+                        <option value="1"><?php echo $text_yes ?></option>
+                        <option value="0" selected="selected"><?php echo $text_no ?></option>
+                    <?php } ?>
+                </select>
+            </td>
+          </tr>
+          <tr>
             <td>Host to Host URL:</td>
             <td><input size="50" type="text" readonly="readonly" value="<?php echo str_replace('admin/','',$this->url->link('payment/payfort_fort/response'));?>"/></td>
           </tr>        
@@ -148,6 +162,19 @@
               <?php } ?></td>
           </tr>
           <tr>
+            <td><?php echo $entry_cc_integration_type; ?><br /><span class="help"><?php echo $help_cc_integration_type; ?></span></td>
+            <td>
+                <select name="payfort_fort_cc_integration_type">
+                    <?php if ($payfort_fort_cc_integration_type == 'merchantPage') { ?>
+                        <option value="redirection"><?php echo $text_redirection ?></option>
+                        <option value="merchantPage" selected="selected"><?php echo $text_merchant_page ?></option>
+                    <?php } else { ?>
+                        <option value="redirection" selected="selected"><?php echo $text_redirection ?></option>
+                        <option value="merchantPage"><?php echo $text_merchant_page ?></option>
+                    <?php } ?>
+                </select>
+            </td>
+          </tr>
           <tr>
             <td><?php echo $entry_sadad; ?></td>
             <td><select name="payfort_fort_sadad">

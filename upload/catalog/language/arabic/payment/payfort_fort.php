@@ -19,3 +19,5 @@ $_['text_success_customer'] = '<p>لقد تم استلام طلبك بنجاح!<
 $_['text_success_guest']    = '<p>تمت معالجة طلبك بنجاح!</p><p>يرجى توجيه اسئلتك إلى<a href="%s"> مدير المتجر</a>.</p> نشكرك على التسوق معنا';
 $_['text_general_error']      = 'خطأ في النظام, الرجاء المحاولة لاحقا';
 $_['text_error_card_decline'] = 'تم رفض البطاقة, الرجاء استخدام بطاقة اخرى';
+$_['text_secure_connection']  = 'Creating a secure connection...';
+$_['error_connection']        = 'Could not connect to PayFort. Please contact the shop\'s administrator for assistance or choose a different payment method.';
