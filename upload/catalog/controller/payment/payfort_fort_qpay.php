@@ -84,7 +84,7 @@ class ControllerPaymentPayfortFortQpay extends Controller {
             'customer_email'        => $order_info['email'],
             'command'               => $this->config->get('payfort_fort_entry_command'),
             'language'              => $this->config->get('payfort_fort_entry_language'),
-            'return_url'            => $this->url->link('payment/payfort_fort/response'),
+            'return_url'            => $this->url->link('payment/payfort_fort/response', '', 'SSL'),
         );
         
         $this->db->query("UPDATE `" . DB_PREFIX . "order` SET payment_method = 'NAPS', date_modified = NOW() WHERE order_id = '" . (int)$order_id . "'");
@@ -121,7 +121,7 @@ class ControllerPaymentPayfortFortQpay extends Controller {
         
         $json['form'] = $form;
         
-        $this->model_checkout_order->confirm($order_id, 1, 'Pending Payment', false);
+        //$this->model_checkout_order->confirm($order_id, 1, 'Pending Payment', false);
 
         $this->response->setOutput(json_encode($json));
 
