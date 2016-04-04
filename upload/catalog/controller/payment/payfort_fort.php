@@ -43,17 +43,7 @@ class ControllerPaymentPayfortFort extends Controller {
             
             unset($params['signature']);
             unset($params['route']);
-            ksort($params);
-            
-            foreach ($params as $k=>$v){
-                if ($v != ''){
-                    $hashString .= strtolower($k).'='.$v;
-                }
-            }
-
-            $hashString = $this->config->get('payfort_fort_entry_response_sha_phrase') . $hashString . $this->config->get('payfort_fort_entry_response_sha_phrase');
-            $trueSignature = hash($this->config->get('payfort_fort_entry_hash_algorithm') ,$hashString);
-            
+            $trueSignature = $this->_calculateSignature($params, 'response');
             if ($trueSignature != $signature){
                 $success = false;
                 if ($this->config->get('payfort_fort_debug')) {
@@ -552,9 +542,32 @@ class ControllerPaymentPayfortFort extends Controller {
      */
     private function _convertFortAmount($amount, $currency_value, $currency_code) {
         $new_amount = 0;
-        $decimal_points = $this->currency->getDecimalPlace();
+        //$decimal_points = $this->currency->getDecimalPlace();
+        $decimal_points = $this->getCurrencyDecimalPoints($currency_code);
         $new_amount = round($amount * $currency_value, $decimal_points) * (pow(10, $decimal_points));
         return $new_amount;
+    }
+    
+    /**
+     * 
+     * @param string $currency
+     * @param integer 
+     */
+    private function getCurrencyDecimalPoints($currency) {
+        $decimalPoint  = 2;
+        $arrCurrencies = array(
+            'JOD' => 3,
+            'KWD' => 3,
+            'OMR' => 3,
+            'TND' => 3,
+            'BHD' => 3,
+            'LYD' => 3,
+            'IQD' => 3,
+        );
+        if (isset($arrCurrencies[$currency])) {
+            $decimalPoint = $arrCurrencies[$currency];
+        }
+        return $decimalPoint;
     }
 }
 

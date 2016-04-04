@@ -1,7 +1,9 @@
 <?php
 
 class ControllerPaymentPayfortFortSadad extends Controller {
-
+    
+    private $_gatewayHost        = 'https://checkout.payfort.com/';
+    private $_gatewaySandboxHost = 'https://sbcheckout.payfort.com/';
     public function index() {
         $this->language->load('payment/payfort_fort');
         $this->data['button_confirm'] = $this->language->get('button_confirm');
@@ -30,17 +32,7 @@ class ControllerPaymentPayfortFortSadad extends Controller {
             
             unset($params['signature']);
             unset($params['route']);
-            ksort($params);
-            
-            foreach ($params as $k=>$v){
-                if ($v != ''){
-                    $hashString .= strtolower($k).'='.$v;
-                }
-            }
-
-            $hashString = $this->config->get('payfort_fort_entry_response_sha_phrase') . $hashString . $this->config->get('payfort_fort_entry_response_sha_phrase');
-            $trueSignature = hash($this->config->get('payfort_fort_entry_hash_algorithm') ,$hashString);
-            
+            $trueSignature = $this->_calculateSignature($params, 'response');
             if ($trueSignature != $signature){
                 $success = false;
             }
@@ -86,25 +78,18 @@ class ControllerPaymentPayfortFortSadad extends Controller {
             'language'              => $this->config->get('payfort_fort_entry_language'),
             'return_url'            => $this->url->link('payment/payfort_fort/response', '', 'SSL'),
         );
-        
         $postData['payment_option'] = 'SADAD';
-        $this->db->query("UPDATE `" . DB_PREFIX . "order` SET payment_method = 'SADAD', date_modified = NOW() WHERE order_id = '" . (int)$order_id . "'");
-        
-        //calculate request signature
-        $shaString = '';
-        ksort($postData);
-        foreach ($postData as $k=>$v){
-            $shaString .= "$k=$v";
-        }
+        $this->db->query("UPDATE `" . DB_PREFIX . "order` SET payment_method = 'Credit / Debit Card', date_modified = NOW() WHERE order_id = '" . (int)$order_id . "'");
 
-        $shaString = $this->config->get('payfort_fort_entry_request_sha_phrase') . $shaString . $this->config->get('payfort_fort_entry_request_sha_phrase');
-        $signature = hash($this->config->get('payfort_fort_entry_hash_algorithm') ,$shaString);
+        //calculate request signature
+        $signature = $this->_calculateSignature($postData, 'request');
+        $postData['signature'] = $signature;
         
         if ($this->config->get('payfort_fort_entry_sandbox_mode')){
-            $gatewayUrl = 'https://sbcheckout.payfort.com/FortAPI/paymentPage';
+            $gatewayUrl = $this->_gatewaySandboxHost.'FortAPI/paymentPage';
         }
         else{
-            $gatewayUrl = 'https://checkout.payfort.com/FortAPI/paymentPage';
+            $gatewayUrl = $this->_gatewayHost.'FortAPI/paymentPage';
         }
         
         $form =  '<form style="display:none" name="payfortpaymentform" id="payfortpaymentform" method="post" action="'.$gatewayUrl.'" id="form1" name="form1">';
@@ -113,7 +98,6 @@ class ControllerPaymentPayfortFortSadad extends Controller {
             $form .= '<input type="hidden" name="'.$k.'" value="'.$v.'">';
         }
         
-        $form .= '<input type="hidden" name="signature" value="'.$signature.'">';
         $form .= '<input type="submit" value="" id="submit" name="submit2">';
         
         $json = array();
@@ -123,7 +107,6 @@ class ControllerPaymentPayfortFortSadad extends Controller {
         //$this->model_checkout_order->confirm($order_id, 1, 'Pending Payment', false);
 
         $this->response->setOutput(json_encode($json));
-
     }
     
     public function success() { 	
@@ -265,6 +248,68 @@ class ControllerPaymentPayfortFortSadad extends Controller {
 		);
 				
 		$this->response->setOutput($this->render());
-  	}
+    }
+    /**
+     * calculate fort signature
+     * @param array $arr_data
+     * @param sting $sign_type request or response
+     * @return string fort signature
+     */
+    private function _calculateSignature($arr_data, $sign_type = 'request') {
+
+        $shaString = '';
+
+        ksort($arr_data);
+        foreach ($arr_data as $k=>$v){
+            $shaString .= "$k=$v";
+        }
+
+        if($sign_type == 'request') {
+            $shaString = $this->config->get('payfort_fort_entry_request_sha_phrase') . $shaString . $this->config->get('payfort_fort_entry_request_sha_phrase');
+        }
+        else{
+            $shaString = $this->config->get('payfort_fort_entry_response_sha_phrase') . $shaString . $this->config->get('payfort_fort_entry_response_sha_phrase');
+        }
+        $signature = hash($this->config->get('payfort_fort_entry_hash_algorithm') ,$shaString);
+
+        return $signature;
+    }
+
+    /**
+     * Convert Amount with dicemal points
+     * @param decimal $amount
+     * @param decimal $currency_value
+     * @param string  $currency_code
+     * @return decimal
+     */
+    private function _convertFortAmount($amount, $currency_value, $currency_code) {
+        $new_amount = 0;
+        //$decimal_points = $this->currency->getDecimalPlace();
+        $decimal_points = $this->getCurrencyDecimalPoints($currency_code);
+        $new_amount = round($amount * $currency_value, $decimal_points) * (pow(10, $decimal_points));
+        return $new_amount;
+    }
+    
+    /**
+     * 
+     * @param string $currency
+     * @param integer 
+     */
+    private function getCurrencyDecimalPoints($currency) {
+        $decimalPoint  = 2;
+        $arrCurrencies = array(
+            'JOD' => 3,
+            'KWD' => 3,
+            'OMR' => 3,
+            'TND' => 3,
+            'BHD' => 3,
+            'LYD' => 3,
+            'IQD' => 3,
+        );
+        if (isset($arrCurrencies[$currency])) {
+            $decimalPoint = $arrCurrencies[$currency];
+        }
+        return $decimalPoint;
+    }
 }
 
