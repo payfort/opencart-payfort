@@ -17,6 +17,7 @@
             <div id="htabs" class="htabs">
                 <a href="#tab-general"><?php echo $tab_general; ?></a>
                 <a href="#tab-cc"><?php echo $tab_credit_card; ?></a>
+                <a href="#tab-installments"><?php echo $tab_installments; ?></a>
                 <a href="#tab-sadad"><?php echo $tab_sadad; ?>
                 <a href="#tab-naps"><?php echo $tab_naps; ?></a>
             </div>
@@ -178,6 +179,37 @@
                         </tr>
                     </table>
                 </div>
+                
+                <div id="tab-installments">
+                    <table class="form">
+                        <tr>
+                            <td><?php echo $entry_status; ?></td>
+                            <td>
+                                <select name="payfort_fort_installments">
+                                    <option value="1" <?php echo ($payfort_fort_installments) ? 'selected="selected"' : '' ?>><?php echo $text_enabled; ?></option>
+                                    <option value="0" <?php echo (!$payfort_fort_installments) ? 'selected="selected"' : '' ?>><?php echo $text_disabled; ?></option>
+                                </select>
+                                <?php if ($payfort_fort_payment_method_required) { ?>
+                                <span class="error"><?php echo $payfort_fort_payment_method_required; ?></span>
+                                <?php } ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><?php echo $entry_installments_integration_type; ?><br /><span class="help"><?php echo $help_installments_integration_type; ?></span></td>
+                            <td>
+                                <select name="payfort_fort_installments_integration_type">
+                                    <option value="redirection" <?php echo ($payfort_fort_installments_integration_type == 'redirection') ? 'selected="selected"' : '' ?>><?php echo $text_redirection; ?></option>
+                                    <option value="merchantPage" <?php echo ($payfort_fort_installments_integration_type == 'merchantPage') ? 'selected="selected"' : '' ?>><?php echo $text_merchant_page; ?></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><?php echo $entry_sort_order; ?></td>
+                            <td><input type="text" name="payfort_fort_installments_sort_order" value="<?php echo $payfort_fort_installments_sort_order; ?>" size="1" /></td>
+                        </tr>
+                    </table>
+                </div>
+                
                 <div id="tab-sadad">
                     <table class="form">
                         <tr>
