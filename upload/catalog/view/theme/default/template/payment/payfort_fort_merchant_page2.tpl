@@ -11,7 +11,7 @@
               </tr>
               <tr>
                 <td><?php echo $text_card_number; ?></td>
-                <td><input type="text" id="payfort_fort_card_number" name="card_number" value="" autocomplete="off" maxlength="16" /></td>
+                <td><input type="text" id="payfort_fort_card_number" name="card_number" value="" autocomplete="off" maxlength="19" /></td>
               </tr>
               <tr>
                 <td><?php echo $text_expiry_date; ?></td>
