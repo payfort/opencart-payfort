@@ -78,6 +78,8 @@ class ControllerPaymentPayfortFort extends Controller {
         $this->data['text_base_currency'] = $this->language->get('text_base_currency');
         $this->data['text_front_currency'] = $this->language->get('text_front_currency');
         $this->data['help_gateway_currency'] = $this->language->get('help_gateway_currency');
+        $this->data['entry_cc_mada_branding']= $this->language->get('entry_cc_mada_branding');
+        $this->data['help_cc_mada_branding']= $this->language->get('help_cc_mada_branding');
         
         $this->data['button_save'] = $this->language->get('button_save');
         $this->data['button_cancel'] = $this->language->get('button_cancel');
@@ -257,6 +259,12 @@ class ControllerPaymentPayfortFort extends Controller {
             $this->data['payfort_fort_cc_integration_type'] = $this->request->post['payfort_fort_cc_integration_type'];
         } else {
             $this->data['payfort_fort_cc_integration_type'] = $this->config->get('payfort_fort_cc_integration_type');
+        }
+        
+        if (isset($this->request->post['payfort_fort_cc_mada_branding'])) {
+            $this->data['payfort_fort_cc_mada_branding'] = $this->request->post['payfort_fort_cc_mada_branding'];
+        } else {
+            $this->data['payfort_fort_cc_mada_branding'] = $this->config->get('payfort_fort_cc_mada_branding');
         }
 
         if (isset($this->request->post['payfort_fort_installments_integration_type'])) {

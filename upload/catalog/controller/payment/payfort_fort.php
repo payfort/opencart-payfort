@@ -11,6 +11,7 @@ class ControllerPaymentPayfortFort extends Controller
     public $pfPayment;
     public $pfHelper;
     public $pfOrder;
+    public $madaBranding;
 
     public function __construct($registry)
     {
@@ -20,6 +21,7 @@ class ControllerPaymentPayfortFort extends Controller
         $this->pfHelper        = Payfort_Fort_Helper::getInstance();
         $this->pfOrder         = new Payfort_Fort_Order();
         $this->integrationType = $this->pfConfig->getCcIntegrationType();
+        $this->madaBranding    = $this->pfConfig->getCcMadaBranding();      
         $this->paymentMethod   = PAYFORT_FORT_PAYMENT_METHOD_CC;
     }
 
@@ -31,7 +33,16 @@ class ControllerPaymentPayfortFort extends Controller
         $this->data['text_error_card_decline'] = $this->language->get('text_error_card_decline');
 
         $this->data['payfort_fort_cc_integration_type'] = $this->integrationType;
-
+        $frontCurrency = $this->pfHelper->getFrontCurrency();
+        $baseCurrency  = $this->pfHelper->getBaseCurrency();        
+        $currency      = $this->pfHelper->getFortCurrency($baseCurrency, $frontCurrency);
+        if ($currency == 'SAR') {
+            $this->data['payfort_fort_cc_mada_branding']    = $this->madaBranding;
+        }
+        else 
+        {
+            $this->data['payfort_fort_cc_mada_branding']    = 'Disabled';            
+        }
         $this->load->model('payment/payfort_fort');
         $this->data['payment_request_params'] = '';
         $template = 'payfort_fort.tpl';

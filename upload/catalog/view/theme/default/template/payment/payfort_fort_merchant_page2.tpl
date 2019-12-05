@@ -5,6 +5,19 @@
     <?php endforeach; ?>
         <div class="content" id="payment">
             <table class="form">
+              
+                 <tr>
+                 <td></td>
+                 <td>
+                 <?php if ($payfort_fort_cc_mada_branding=='Enabled') { ?>
+                <img src="catalog/view/theme/default/image/payfort_mada.jpeg" alt="mada" height="26" width="50"/>    
+                <?php } ?>        
+            	<img src="catalog/view/theme/default/image/payfort_visa.png" alt="visa" height="26" width="42"/>
+            	<img src="catalog/view/theme/default/image/payfort_mastercard.jpeg" alt="mc" height="26" width="42"/>
+ 				 </td>
+ 				 </tr>
+              
+              
               <tr>
                 <td><?php echo $text_card_holder_name; ?></td>
                 <td><input type="text" id="payfort_fort_card_holder_name" name="card_holder_name" value="" autocomplete="off" maxlength="50" /></td>

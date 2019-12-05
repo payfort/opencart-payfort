@@ -173,6 +173,19 @@
                                 </select>
                             </td>
                         </tr>
+                         
+                         
+                         <tr>
+                            <td><?php echo $entry_cc_mada_branding; ?><br /><span class="help"><?php echo $help_cc_mada_branding; ?></span></td>
+                            <td>
+                                <select name="payfort_fort_cc_mada_branding">
+                     	           <option value="Disabled" <?php echo ($payfort_fort_cc_mada_branding == 'Disabled') ? 'selected="selected"' : '' ?>><?php echo $text_disabled; ?></option>
+                                   <option value="Enabled"  <?php echo ($payfort_fort_cc_mada_branding == 'Enabled') ? 'selected="selected"' : '' ?>><?php echo $text_enabled; ?></option>                                        
+                                </select>
+                            </td>
+                        </tr>
+                        
+                        
                         <tr>
                             <td><?php echo $entry_sort_order; ?></td>
                             <td><input type="text" name="payfort_fort_sort_order" value="<?php echo $payfort_fort_sort_order; ?>" size="1" /></td>
