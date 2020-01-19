@@ -2,17 +2,17 @@
 
 class Payfort_Fort_Helper
 {
-
+    
     private static $instance;
     private $registry;
     private $pfConfig;
-
+    
     public function __construct()
     {
         $this->pfConfig = Payfort_Fort_Config::getInstance();
         $this->registry = Payfort_Fort_Util::getRegistry();
     }
-
+    
     /**
      * @return Payfort_Fort_Config
      */
@@ -27,10 +27,10 @@ class Payfort_Fort_Helper
     public function getBaseCurrency()
     {
         $query = $this->registry->get('db')->query("SELECT DISTINCT * FROM " . DB_PREFIX . "currency WHERE value = '1.00000000'");
-
+       
         return isset($query->row["code"]) ? $query->row["code"] : '';
     }
-
+    
     public function getFrontCurrency()
     {
         return $this->registry->get('session')->data['currency'];
@@ -45,18 +45,18 @@ class Payfort_Fort_Helper
         }
         return $currencyCode;
     }
-
+   
     public function getReturnUrl($path)
     {
         return $this->getUrl('payment/payfort_fort/' . $path);
     }
-
+   
     public function getUrl($path)
     {
         $url = $this->registry->get('url')->link($path, '', 'SSL');
         return $url;
     }
-
+   
     /**
      * Convert Amount with dicemal points
      * @param decimal $amount
@@ -76,10 +76,12 @@ class Payfort_Fort_Helper
         else {
             $new_amount = round($amount, $decimal_points);
         }
-        $new_amount = $new_amount * (pow(10, $decimal_points));
+        if($decimal_points != 0) {
+            $new_amount = $new_amount * (pow(10, $decimal_points));
+        }
         return $new_amount;
     }
-
+  
     /**
      * 
      * @param string $currency
@@ -96,13 +98,29 @@ class Payfort_Fort_Helper
             'BHD' => 3,
             'LYD' => 3,
             'IQD' => 3,
+            'CLF' => 4,
+            'BIF' => 0,
+            'DJF' => 0,
+            'GNF' => 0, 
+            'ISK' => 0,
+            'JPY' => 0,
+            'KMF' => 0,
+            'KRW' => 0,
+            'CLP' => 0,
+            'PYG' => 0,
+            'RWF' => 0,
+            'UGX' => 0,
+            'VND' => 0,
+            'VUV' => 0,
+            'XAF' => 0,
+            'BYR' => 0,
         );
         if (isset($arrCurrencies[$currency])) {
             $decimalPoint = $arrCurrencies[$currency];
         }
         return $decimalPoint;
     }
-
+   
     /**
      * calculate fort signature
      * @param array $arrData
@@ -112,12 +130,12 @@ class Payfort_Fort_Helper
     public function calculateSignature($arrData, $signType = 'request')
     {
         $shaString = '';
-
+     
         ksort($arrData);
         foreach ($arrData as $k => $v) {
             $shaString .= "$k=$v";
         }
-
+       
         if ($signType == 'request') {
             $shaString = $this->pfConfig->getRequestShaPhrase() . $shaString . $this->pfConfig->getRequestShaPhrase();
         }
@@ -125,10 +143,10 @@ class Payfort_Fort_Helper
             $shaString = $this->pfConfig->getResponseShaPhrase() . $shaString . $this->pfConfig->getResponseShaPhrase();
         }
         $signature = hash($this->pfConfig->getHashAlgorithm(), $shaString);
-
+    
         return $signature;
     }
-
+    
     /**
      * Log the error on the disk
      */
@@ -141,12 +159,12 @@ class Payfort_Fort_Helper
         $log = new Log($this->pfConfig->getLogFileDir());
         $log->write($messages);
     }
-
+   
     public function getCustomerIp()
     {
         return $this->registry->get('request')->server['REMOTE_ADDR'];
     }
-
+   
     public function getGatewayHost()
     {
         if ($this->pfConfig->isSandboxMode()) {
@@ -154,7 +172,7 @@ class Payfort_Fort_Helper
         }
         return $this->getGatewayProdHost();
     }
-
+    
     public function getGatewayUrl($type = 'redirection')
     {
         $testMode = $this->pfConfig->isSandboxMode();
@@ -164,10 +182,10 @@ class Payfort_Fort_Helper
         else {
             $gatewayUrl = $testMode ? $this->pfConfig->getGatewaySandboxHost() . 'FortAPI/paymentPage' : $this->pfConfig->getGatewayProdHost() . 'FortAPI/paymentPage';
         }
-
+   
         return $gatewayUrl;
     }
-
+    
     public function setFlashMsg($message, $status = PAYFORT_FORT_FLASH_MSG_ERROR, $title = '')
     {
         $this->registry->get('session')->data['error'] = $message;
@@ -185,7 +203,7 @@ class Payfort_Fort_Helper
             echo $result; 
         }
     }
-
+    
 }
 
 ?>
