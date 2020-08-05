@@ -125,7 +125,39 @@ class Payfort_Fort_Helper
             $shaString = $this->pfConfig->getResponseShaPhrase() . $shaString . $this->pfConfig->getResponseShaPhrase();
         }
         $signature = hash($this->pfConfig->getHashAlgorithm(), $shaString);
+        
+         //calculate hmac 
+        if (in_array($this->pfConfig->getHashAlgorithm(), array('HMAC256', 'HMAC512'))) {
+            $signature = $this->calculateHmac($this->pfConfig->getHashAlgorithm(), $shaString, $signType, $this->pfConfig->getRequestShaPhrase(), $this->pfConfig->getResponseShaPhrase());
+            return $signature;
+        }
 
+        return $signature;
+    }
+    
+    /**
+     * calculate HMAC
+     * 
+     * @param type $shaType
+     * @param type $shaString
+     * @param type $signType request or response
+     * @param type $shaInPassPhrase  request pass phrase
+     * @param type $shaOutPassPhrase response pass phrase
+     */
+    public function calculateHmac($shaType, $shaString, $signType, $shaInPassPhrase, $shaOutPassPhrase)
+    {
+        if ($signType == 'request') {
+            $hmacSecretkey = $shaInPassPhrase;
+        } else {
+            $hmacSecretkey = $shaOutPassPhrase;
+        }
+        
+        if ($shaType == 'HMAC256') {
+            $signature = hash_hmac('sha256', $shaString, $hmacSecretkey);
+        } else {
+            $signature = hash_hmac('sha512', $shaString, $hmacSecretkey);
+        }
+        
         return $signature;
     }
 

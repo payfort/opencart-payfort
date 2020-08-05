@@ -35,6 +35,8 @@ class ControllerPaymentPayfortFort extends Controller {
         $this->data['text_sha1'] = $this->language->get('text_sha1');
         $this->data['text_sha256'] = $this->language->get('text_sha256');
         $this->data['text_sha512'] = $this->language->get('text_sha512');
+        $this->data['text_hmac256'] = $this->language->get('text_hmac256');
+        $this->data['text_hmac512'] = $this->language->get('text_hmac512');
         $this->data['text_en'] = $this->language->get('text_en');
         $this->data['text_ar'] = $this->language->get('text_ar');
         $this->data['text_edit'] = $this->language->get('text_edit');
