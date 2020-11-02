@@ -33,6 +33,7 @@ class Payfort_Fort_Config
     private $status;
     private $ccStatus;
     private $ccIntegrationType;
+    private $ccMadaBranding;
     private $sadadStatus;
     private $napsStatus;
     private $gatewayProdHost;
@@ -65,6 +66,7 @@ class Payfort_Fort_Config
         $this->status                                = $this->_getShoppingCartConfig('status');
         $this->ccStatus                              = $this->_getShoppingCartConfig('credit_card');
         $this->ccIntegrationType                     = $this->_getShoppingCartConfig('cc_integration_type');
+        $this->ccMadaBranding                        = $this->_getShoppingCartConfig('cc_mada_branding');        
         $this->sadadStatus                           = $this->_getShoppingCartConfig('sadad');
         $this->napsStatus                            = $this->_getShoppingCartConfig('naps');
         // installments
@@ -229,6 +231,11 @@ class Payfort_Fort_Config
     public function getCcIntegrationType()
     {
         return $this->ccIntegrationType;
+    }
+    
+    public function getCcMadaBranding()
+    {
+        return $this->ccMadaBranding;
     }
 
     public function isCcMerchantPage()
